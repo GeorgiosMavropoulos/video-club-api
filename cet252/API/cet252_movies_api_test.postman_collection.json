@@ -1,0 +1,576 @@
+{
+	"info": {
+		"_postman_id": "1247d09a-fbfe-4af4-ab97-69748d605a85",
+		"name": "cet252_movies_api_test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "50279970"
+	},
+	"item": [
+		{
+			"name": "GET ALL Movies",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//validating that status code is 200!",
+							"pm.test(\"status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"//checking if the response has at least 1 movie",
+							"pm.test(\"response has at least 1 movie\", function () {",
+							"    const data = pm.response.json();",
+							"    //checking if response is an array!",
+							"    pm.expect(data.movies).to.be.an('array');",
+							"    pm.expect(data.movies.length).to.be.at.least(1);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/movies",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"movies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT/2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//validating that success respond will be 200!",
+							"pm.test(\"Status code is 200\", function () {",
+							"pm.response.to.have.status(200);",
+							"});",
+							"",
+							"//checking if resonse is in json format!",
+							"pm.test(\"response is in json format\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"//validating that respone will be a success message and id will be an existed one!",
+							"pm.test('Response will contain a success message',function() {",
+							"const json = pm.response.json();    ",
+							"const id = pm.request.url.path[1];",
+							"//here comes the success msg!",
+							"pm.expect(json.message).to.eql(`Movie with id:${id}  updated`);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\n            \"id\": 2,\n            \"category_id\": 1,\n            \"title\": \"Superbad\",\n            \"director\": \"Greg Mottola\",\n            \"date\": \"2008\",\n            \"plot\": \"Two high school buddies try to make the most of their last days before graduation.\",\n            \"genre\": \"Comedy\",\n            \"image\": \"/uploads/superbad.jpeg\"\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/movies/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"movies",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET/2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//validating that status code is 200!",
+							"pm.test(\"status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"//checking if resonse is in json format!",
+							"pm.test(\"response is in json format\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"//required json format to be sent back!",
+							"pm.test(\"Response has all the required fields\",function (){",
+							"    const json = pm.response.json();",
+							"     pm.expect(json).to.have.property(\"movie\");",
+							"    pm.expect(json.movie[0]).to.have.property(\"id\");",
+							"    pm.expect(json.movie[0]).to.have.property(\"category_id\")",
+							"    pm.expect(json.movie[0]).to.have.property(\"title\");",
+							"    pm.expect(json.movie[0]).to.have.property(\"director\");",
+							"    pm.expect(json.movie[0]).to.have.property(\"date\");",
+							"    pm.expect(json.movie[0]).to.have.property(\"plot\");",
+							"    pm.expect(json.movie[0]).to.have.property(\"genre\");",
+							"    pm.expect(json.movie[0]).to.have.property(\"image\");",
+							"});",
+							"",
+							"//checking if the id matches",
+							"pm.test(\"Id matches with the requested one\",function(){",
+							"    const json = pm.response.json();",
+							"    pm.expect(json.movie[0].id).to.eql(2);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/movies/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"movies",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE/12",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//validating that status code is 200!",
+							"pm.test(\"status code is 200 or 204\", function () {",
+							"    pm.expect(pm.response.code).to.have.be.oneOf([200,404]);",
+							"});",
+							"",
+							"//checking if resonse is in json format!",
+							"pm.test(\"response is in json format\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"//validating that respone will be a success message and id will be an existed one!",
+							"pm.test('Response contains a success message or a failure message',function(){",
+							"    const json = pm.response.json();",
+							"    const id = pm.request.url.path[1]",
+							"    if(pm.response.code ===200)",
+							"    {",
+							"       pm.expect(json.message).to.eql(`Movie with id:${id} has been deleted!`);",
+							"    }",
+							"    else if(pm.response.code === 404)",
+							"    {",
+							"     pm.expect(json.message).to.eql(`Movie with id:${id} does not exists`);",
+							"    }",
+							"    ",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/movies/12",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"movies",
+						"12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST MOVIE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//validating that status code is 201!",
+							"pm.test(\"status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"//checking if response is in json format",
+							"pm.test('Response is in json',function(){",
+							"pm.response.to.be.json;",
+							"});",
+							"pm.test('Response contains a success message',function(){",
+							"    const json = pm.response.json();",
+							"    pm.expect(json.message).to.eql('Movie added');",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"category_id\":3,\"title\":\"predator\",\"director\":\"John MacTiernan\" ,\"date\":\"1987\",\"plot\":\"Dutch, a soldier of fortune, is hired by the U.S. government to secretly rescue a group of politicians trapped in Guatemala. But when Dutch and his team, which includes weapons expert Blain and CIA agent George, land in Central America, something is wrong. After finding a string of dead bodies, the soldiers discover they are being hunted by a brutal creature with superhuman strength and the ability to disappear into its surroundings\",\"genre\":\"action\",\"image\":\"uploads/predator1.jpeg\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/movies/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"movies",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST CATEGORY",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//validating that status code is 201!",
+							"pm.test(\"status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"//checking if response is in json format!",
+							"pm.test('Response is in json',function(){",
+							"pm.response.to.be.json;",
+							"});",
+							"//validating that respone will be a success message!",
+							"pm.test('Response contains a success message',function(){",
+							"    const json = pm.response.json();",
+							"    pm.expect(json.message).to.eql('Created!');",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"category_name\":\"sitcom\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/movies/categories",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"movies",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Categories",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//validating that status code is 200!",
+							"pm.test(\"status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"//checking if the response has at least 1 category!",
+							"pm.test(\"response has at least 1 category\", function () {",
+							"    const data = pm.response.json();",
+							"    //checking if response is an array!",
+							"    pm.expect(data.categories).to.be.an('array');",
+							"    pm.expect(data.categories.length).to.be.at.least(1);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/movies/categories",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"movies",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Movies specified by a category in the url",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//validating that status code is 200!",
+							"pm.test(\"status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"//checking if resonse is in json format!",
+							"pm.test(\"response is in json format\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"//validating that at least one movie will be returned!",
+							"pm.test(\"response has at least 1 movie\", function () {",
+							"    const data = pm.response.json();",
+							"    //checking if response is an array!",
+							"    pm.expect(data.movies).to.be.an('array');",
+							"    pm.expect(data.movies.length).to.be.at.least(1);",
+							"});",
+							"",
+							"",
+							"//movies must include all the required fields!",
+							"pm.test('movies must include all the required fields',function(){",
+							" const json = pm.response.json();",
+							" const m = json.movies[0];",
+							" pm.expect(m).to.have.property(\"id\");",
+							"  pm.expect(m).to.have.property(\"category_id\");",
+							"   pm.expect(m).to.have.property(\"title\");",
+							"   pm.expect(m).to.have.property(\"director\");",
+							"   pm.expect(m).to.have.property(\"date\");",
+							"   pm.expect(m).to.have.property(\"plot\");",
+							"   pm.expect(m).to.have.property(\"genre\");",
+							"   pm.expect(m).to.have.property(\"image\");",
+							"   //pm.expect(m).to.have.property(\"category_name\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/movies/categories/horror",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"movies",
+						"categories",
+						"horror"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Movie by provided title",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//validating that status code is 200!",
+							"pm.test(\"status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"//checking if resonse is in json format!",
+							"pm.test(\"response is in json format\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"//required json format to be sent back!",
+							"pm.test(\"Response has all the required fields\",function (){",
+							"    const json = pm.response.json();",
+							"     pm.expect(json).to.have.property(\"movie\");",
+							"    pm.expect(json.movie[0]).to.have.property(\"id\");",
+							"    pm.expect(json.movie[0]).to.have.property(\"category_id\")",
+							"    pm.expect(json.movie[0]).to.have.property(\"title\");",
+							"    pm.expect(json.movie[0]).to.have.property(\"director\");",
+							"    pm.expect(json.movie[0]).to.have.property(\"date\");",
+							"    pm.expect(json.movie[0]).to.have.property(\"plot\");",
+							"    pm.expect(json.movie[0]).to.have.property(\"genre\");",
+							"    pm.expect(json.movie[0]).to.have.property(\"image\");",
+							"});",
+							"",
+							"//checking if the id matches",
+							"pm.test(\"Title matches with the requested one\",function(){",
+							"    const json = pm.response.json();",
+							"    pm.expect(json.movie[0].title).to.eql('Die Hard');",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/movies/title/Die Hard",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"movies",
+						"title",
+						"Die Hard"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete category",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//validating that status code is 200!",
+							"pm.test(\"status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"//checking if resonse is in json format!",
+							"pm.test(\"response is in json format\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"//validating that respone will be a success message and id will be an existed one!",
+							"pm.test('Response contains a success message',function(){",
+							"    const json = pm.response.json();",
+							"    const category_name = pm.request.url.path[3]; //retreiving the desired category, which is the 3d element in the URL!",
+							"   ",
+							"pm.expect(json.message).to.eql(`Success the category:${category_name} has been deleted`);",
+							"    ",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/movies/categories/del/sitcom",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"movies",
+						"categories",
+						"del",
+						"sitcom"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

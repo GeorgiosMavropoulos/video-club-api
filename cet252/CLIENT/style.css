@@ -1,0 +1,56 @@
+
+html,body{
+     height: 100%;
+}
+
+/*making the whole background like the container's color*/
+.py-3{
+     background-color: #11BDAE;
+}
+
+/*chaning the font type*/
+.mb-0
+{
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+/*chaning body's background-color*/
+body{
+    background-color: #068E43;
+    display: flex;
+      flex-direction: column;
+}
+
+/*styling the Gallery section*/
+.gallery-title{
+    color: #F9D86A;
+    font-size: 30px;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-decoration: none;
+}
+
+/*hover effect on Gallery*/
+.gallery-title:hover{
+     color: #1207E0; 
+  text-decoration: none;
+}
+
+/*styling the footer*/
+.py-6{
+    font-family:'fantasy';
+     font-size: larger;
+}
+
+/*giving background color to btn's div*/
+.btn-group{
+         background-color: #D8EF29;
+}
+
+/*chaning btn's font*/
+.btn{
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+}
+<<<<<<< HEAD
+=======
+
+>>>>>>> develop_website
