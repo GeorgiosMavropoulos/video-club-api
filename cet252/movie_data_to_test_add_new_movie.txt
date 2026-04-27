@@ -1,0 +1,8 @@
+You can use the following data to test insert a new movie through client app or  postman. You can find the image inside API/uploads folder, I will specify the path below.
+category:Action(if you use postman:category_id:3)
+Image:/uploads/watchmen.jpeg
+Title: Watchmen
+Director:Zack Snyder
+Date: 2009
+Plot:In a version of 1985 where superheroes exist, the murder of a colleague sends active vigilante Rorschach on the trail of a conspiracy that will change the course of history.
+Genre: Action
