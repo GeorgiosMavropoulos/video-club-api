@@ -5,7 +5,7 @@ const API_URL = process.env.NEXT_PUBLIC_URL;
 export async function apiFetch(endpoint)
 {
   //create a variable to delegate the response received from the backend
-  const respond = await fetch(`${API_URL}${endpoint}`);
+  const response = await fetch(`${API_URL}${endpoint}`);
 
   //throw an exception if receive didn't respond
   if(!response.ok){

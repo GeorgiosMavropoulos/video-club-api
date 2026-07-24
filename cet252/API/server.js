@@ -3,9 +3,11 @@ const {DB} = require('./connect.js');
 
 //importing express
 const express = require('express');
-
+const cors = require('cors');
 //creating the express server!
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());//using this middleware for parsing json data!
 
