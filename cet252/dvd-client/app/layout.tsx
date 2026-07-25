@@ -26,16 +26,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable }  h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        
+      <body className="min-h-full flex flex-col ">
+        <div className="min-h-screen bg-blue-950">
+
         {/* create a nav bar displaying all the categories*/}
              
         <DisplayNavigationBar/>
         {children}
    
-
+</div>
 
       </body>
     </html>
