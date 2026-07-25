@@ -35,7 +35,6 @@ async function FetchCategoriesForNavBar(){
 
         //return an error message if server does not respond
         const categories = await all_categories.json()
-            console.log(categories);
         //return an exception if categories does not exist
         if(!categories || categories.length ===0)
         {
@@ -76,13 +75,17 @@ if (error) return <p className="error">{error}</p>
 <nav className="bg-green-600 fixed w-full z-50 top-0 start-0 border-b border-default">
   <div className="max-w-screen-xl flex flex-wrap items-center justify-center mx-auto p-4">
   
+        <div className = "text-amber-600 items-left justify-left">
+
+          <a href="http://localhost:3000/movies_gallery">DVD ESCAPE</a>
+        </div>
     <div className="hidden w-full md:block md:w-auto" id="navbar-solid">
       <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-default rounded-base bg-neutral-secondary-soft md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-neutral-secondary-soft">
         
          
             {data.categories.map((category)=> 
                 <li key={category.category_id} >
-                    <a href={`/category/${category.category_id}`} className="block text-center py-2 px-3 font-bold text-xl tracking-wider bg-gradient-to-r from-yellow-600 via-amber-400 to-yellow-600 bg-clip-text text-transparent">
+                    <a href={`/category/${category.category_name}`} className="block text-center py-2 px-3 font-bold text-xl tracking-wider bg-gradient-to-r from-yellow-600 via-amber-400 to-yellow-600 bg-clip-text text-transparent">
                     {category.category_name}
                         </a>
                     

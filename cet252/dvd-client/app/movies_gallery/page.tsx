@@ -31,7 +31,7 @@ const [error, setError] = useState<string | null>(null);//log error messages
       
         const movie_data = await movies.json();
 
-        console.log(movie_data);//log data for debugging
+      
     
            //return an error message if there aren't any movies available
         if(!movie_data.movies ||  movie_data.movies.length === 0)

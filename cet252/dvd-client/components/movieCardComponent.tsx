@@ -19,7 +19,7 @@
 
  //function to display the html elements
  export default function MovieDisplay({movie}:MovieProps){
-console.log(movie.image);
+
     //create the UI elements
     return (
     
@@ -71,5 +71,9 @@ console.log(movie.image);
 
     )
  }
+
+
+ //method to display movies by category
+
 
 
