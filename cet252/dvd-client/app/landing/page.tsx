@@ -30,6 +30,8 @@ const [error, setError] = useState<string | null>(null);//log error messages
 
       
         const movie_data = await movies.json();
+
+        console.log(movie_data);//log data for debugging
     
            //return an error message if there aren't any movies available
         if(!movie_data.movies ||  movie_data.movies.length === 0)
@@ -73,16 +75,19 @@ if (error) return <p className="error">{error}</p>
   //return movies
   return(
      
-        <main style={{ padding: "40px" }}>
+        <main className="mt-20" style={{ padding: "40px" }}>
       
-
-     {data.movies.map((movie)=>
+<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+  {data.movies.map((movie)=>
        
             <MovieDisplay key ={movie.id} movie={movie}/>    
              
     
     
     )}
+
+</div>
+   
 
     
       
