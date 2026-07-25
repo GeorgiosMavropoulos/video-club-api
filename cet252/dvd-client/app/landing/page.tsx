@@ -11,6 +11,7 @@ export default function MovieGalery()
   //create useState variables
 const [data, setData] = useState(null);
 const [isLoading, setLoading] = useState(true);
+const [error, setError] = useState<string | null>(null);//log error messages
 
 //method to fetch movies
  async function GetMovies()
@@ -24,7 +25,7 @@ const [isLoading, setLoading] = useState(true);
         //return an error message if failed to retrieve movies
         if(!movies.ok)
         {
-          alert("Error retrieving the movies");
+          throw new Error("Error retrieving the movies");
         }
 
       
@@ -33,18 +34,23 @@ const [isLoading, setLoading] = useState(true);
            //return an error message if there aren't any movies available
         if(!movie_data.movies ||  movie_data.movies.length === 0)
         {
-           alert("There aren't any movies available");
+           throw new Error("There aren't any movies available");
         }
 
          //setData
         setData(movie_data);
-        //set isLoading into false
-        setLoading(false);
+        
 
     }catch(error)
     {
-        throw new Error(`Error displaying movies:${error}`);
+        setError(error.message);
+       
     }
+     finally
+  {
+    
+    setLoading(false);
+  }
       
 }
 
@@ -57,13 +63,18 @@ const [isLoading, setLoading] = useState(true);
 
   //if page didn't load return loading....
  if (isLoading) return <p>Loading...</p>
+
+   //if there is an error
+if (error) return <p className="error">{error}</p>
   if (!data) return <p>Movies do not exist</p> //return that movies do not exist if failed to fetch data
+
+  
 
   //return movies
   return(
      
         <main style={{ padding: "40px" }}>
-      <h1>DvD Escape</h1>
+      
 
      {data.movies.map((movie)=>
        
@@ -72,6 +83,8 @@ const [isLoading, setLoading] = useState(true);
     
     
     )}
+
+    
       
      
     </main>

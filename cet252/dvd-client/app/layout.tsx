@@ -31,9 +31,10 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         
         {/* create a nav bar displaying all the categories*/}
-        {children}
-        
+             
         <DisplayNavigationBar/>
+        {children}
+   
 
 
       </body>
