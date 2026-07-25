@@ -19,7 +19,7 @@
 
  //function to display the html elements
  export default function MovieDisplay({movie}:MovieProps){
-
+console.log(movie.image);
     //create the UI elements
     return (
     
@@ -29,9 +29,10 @@
             {/*Movie's image*/}
              <div className="w-full h-48 overflow-hidden rounded-t-lg bg-gray-100">
         <img 
-          src={movie.image} 
+          src={`http://localhost:4000${movie.image}`} 
           alt={movie.title} 
-          className="w-full h-full object-cover"
+           className="w-full h-48 overflow-hidden rounded-t-lg bg-gray-100"
+          
         />
 
 
