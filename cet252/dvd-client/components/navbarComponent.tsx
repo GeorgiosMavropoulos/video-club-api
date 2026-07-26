@@ -72,29 +72,53 @@ if (error) return <p className="error">{error}</p>
     //create the UI elements
     return(
          
-<nav className="bg-green-600 fixed w-full z-50 top-0 start-0 border-b border-default">
-  <div className="max-w-screen-xl flex flex-wrap items-center justify-center mx-auto p-4">
-  
-        <div className = "text-amber-600 items-left justify-left">
+<nav className="h-25 bg-[#0b0b0b] fixed w-full z-50 top-0 border-b border-yellow-700">
+  <div className="max-w-screen-xl h-full flex items-center mx-auto px-4">
 
-          <a href="http://localhost:3000/movies_gallery">DVD ESCAPE</a>
-        </div>
-    <div className="hidden w-full md:block md:w-auto" id="navbar-solid">
-      <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-default rounded-base bg-neutral-secondary-soft md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-neutral-secondary-soft">
+
+    
+    {/*logo */}
+    <a 
+      href="http://localhost:3000/movies_gallery"
+      className="text-yellow-400 font-bold text-2xl mr-12"
+    >
+      DVD ESCAPE
+    </a>
+
+
+    {/*categories */}
+    <ul className="flex items-center space-x-8">
+      {data.categories.map((category) => (
+        <li key={category.category_id}>
+          <a
+            href={`/category/${category.category_name}`}
+            className="font-bold text-xl tracking-wider text-gray-200 hover:text-yellow-400 transition"
+          >
+            {category.category_name}
+          </a>
+        </li>
+      ))}
+    </ul>
+    {/*search bar*/}
+     <form class="max-w-md mx-auto">   
+    <label for="search" class="block mb-2.5 text-sm font-medium text-heading sr-only ">Search</label>
+    <div class="relative">
         
-         
-            {data.categories.map((category)=> 
-                <li key={category.category_id} >
-                    <a href={`/category/${category.category_name}`} className="block text-center py-2 px-3 font-bold text-xl tracking-wider bg-gradient-to-r from-yellow-600 via-amber-400 to-yellow-600 bg-clip-text text-transparent">
-                    {category.category_name}
-                        </a>
-                    
-                    </li>)}
-         
-      
-      
-      </ul>
+        <input type="search" id="search" class="w-64
+    bg-[#132B4F]
+    text-[#F5E6CC]
+    placeholder:text-slate-400
+    border border-slate-600
+    rounded-full
+    m-0.5
+    px-4 py-2
+    focus:outline-none
+    focus:ring-2
+    focus:ring-[#D4AF37]" placeholder="Search" required />
+        <button type="button" class="absolute end-1.5 bottom-1.5 text-white bg-brand hover:bg-blue-strong box-border border border-transparent focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded text-xs px-3 py-1.5 focus:outline-none">Search</button>
     </div>
+</form>
+
   </div>
 </nav>
 
