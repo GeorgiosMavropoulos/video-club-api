@@ -18,9 +18,10 @@ import useMovieSearch from '../hooks/useMovieSearch'; //import searchMovie metho
     //create use state variables
     const [value, setValue] = useState('');
  
-    //create a variable to store useMovieSearch's function
-    const {searchMovie, movies, loading, error} = useMovieSearch(value);
+   
+    const [searchError, setSearchError] = useState('');
 
+                 
 
     //create the UI elements
             return(
@@ -40,9 +41,29 @@ import useMovieSearch from '../hooks/useMovieSearch'; //import searchMovie metho
             px-4 py-2
             focus:outline-none
             focus:ring-2
-            focus:ring-[#D4AF37]" placeholder="Search" onChange={(e)=>setValue(e.target.value)} required />
-            <button type="button" className="absolute end-1.5 bottom-1.5 text-white bg-brand hover:bg-blue-strong box-border border border-transparent focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded text-xs px-3 py-1.5 focus:outline-none" onClick={() => router.push(`/movie_result/${value}`)}>Search</button>
+            focus:ring-[#D4AF37]" placeholder="Search" onChange={(e)=>{
+        setValue(e.target.value);
+        setSearchError('');
+    }} required />
+            <button type="button"
+             className="absolute end-1.5 bottom-1.5 text-white bg-brand hover:bg-blue-strong box-border border border-transparent focus:ring-4 focus:ring-brand-medium
+              shadow-xs font-medium leading-5 rounded text-xs px-3 py-1.5 focus:outline-none" 
+              onClick={ ()=>
+              {
+                if(value.trim() === ''){
+                    setSearchError("Please enter a movie title");
+                    return;
+                }
+                router.push(`/movie_result/${value}`)
+
+              }
+                
+                }>Search</button>
             </div>
+
+                        {searchError && (
+                alert({searchError})
+)}
         </form>
          </>
     )
