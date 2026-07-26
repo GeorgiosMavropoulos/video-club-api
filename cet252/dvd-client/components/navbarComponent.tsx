@@ -6,7 +6,8 @@
 
 import { useState, useEffect } from 'react'; //import useState and useEffect
 
-
+//import navigation's bar component
+import SearchBar from './searchBarComponent';
 //function to create the html elements
  export default function DisplayNavigationBar()
 {
@@ -100,24 +101,7 @@ if (error) return <p className="error">{error}</p>
       ))}
     </ul>
     {/*search bar*/}
-     <form class="max-w-md mx-auto">   
-    <label for="search" class="block mb-2.5 text-sm font-medium text-heading sr-only ">Search</label>
-    <div class="relative">
-        
-        <input type="search" id="search" class="w-64
-    bg-[#132B4F]
-    text-[#F5E6CC]
-    placeholder:text-slate-400
-    border border-slate-600
-    rounded-full
-    m-0.5
-    px-4 py-2
-    focus:outline-none
-    focus:ring-2
-    focus:ring-[#D4AF37]" placeholder="Search" required />
-        <button type="button" class="absolute end-1.5 bottom-1.5 text-white bg-brand hover:bg-blue-strong box-border border border-transparent focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded text-xs px-3 py-1.5 focus:outline-none">Search</button>
-    </div>
-</form>
+    <SearchBar/>
 
   </div>
 </nav>
