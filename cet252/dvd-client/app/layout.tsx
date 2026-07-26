@@ -28,13 +28,18 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body>
 
-        <h1>DVD ESCAPE</h1>
+     
         {/* create a nav bar displaying all the categories*/}
              
         <DisplayNavigationBar/>
-        {children}
+        <main className=" min-h-screen bg-white">
+           {children}
+          </main>
+       
+        
+        
    
 
 
