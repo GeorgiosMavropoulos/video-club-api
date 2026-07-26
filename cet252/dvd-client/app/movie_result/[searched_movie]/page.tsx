@@ -28,6 +28,7 @@ const params = useParams();
         <main>
 
         {loading && <p>Loading...</p>}
+        
 
      {error && <p>{error}</p>}
      

@@ -1,6 +1,6 @@
 //js and react code for UI component
 
-
+import Image from "next/image";
 
  //create item's interface. the shape of the data
  interface MovieProps{
@@ -24,14 +24,18 @@
     return (
     
         ///implement tailwind class names
-            <div className=" max-w-sm rounded-xl overflow-hidden shadow-lg border border-gray-200 bg-[#1e293b] rounded-xl shadow-xl border border-slate-700 rounded-xl shadow-lg p-4">
+            <div className="max-w-sm overflow-hidden rounded-xl border border-slate-700 bg-[#1e293b] shadow-xl">
             
             {/*Movie's image*/}
-             <div className="w-full h-48 overflow-hidden rounded-t-lg bg-gray-100">
-        <img 
+             <div className="relative w-full aspect-[2/3]">
+        <Image
           src={`http://localhost:4000${movie.image}`} 
           alt={movie.title} 
-           className="w-full h-48 overflow-hidden rounded-t-lg bg-gray-100"
+          fill
+          
+          unoptimized
+          sizes="(max-width: 768px) 100vw, 384px"
+           className="object-cover object-top rounded-t-xl"
           
         />
 
@@ -39,9 +43,9 @@
       </div>
            
             {/* Movie's title*/}
-           <div className="pt-4 ">
+           <div className="p-4 ">
         {/* Typography classes for font size, weight, and colors */}
-        <h1 className="text-[#F8FAFC] font-bold text-xl">
+        <h1 className="text-[#F8FAFC] font-bold mb-2">
           {movie.title}
         </h1>
 
