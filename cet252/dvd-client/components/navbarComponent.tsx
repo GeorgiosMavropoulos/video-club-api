@@ -5,6 +5,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'; //import useState and useEffect
+import Link from 'next/link'
 
 //import navigation's bar component
 import SearchBar from './searchBarComponent';
@@ -79,24 +80,26 @@ if (error) return <p className="error">{error}</p>
 
     
     {/*logo */}
-    <a 
+    <Link
       href="http://localhost:3000/movies_gallery"
       className="text-yellow-400 font-bold text-2xl mr-12"
     >
       DVD ESCAPE
-    </a>
+    </Link>
 
 
     {/*categories */}
     <ul className="flex items-center space-x-8">
       {data.categories.map((category) => (
         <li key={category.category_id}>
-          <a
+          <Link
             href={`/category/${category.category_name}`}
-            className="font-bold text-xl tracking-wider text-gray-200 hover:text-yellow-400 transition"
-          >
-            {category.category_name}
-          </a>
+            className="font-bold text-xl tracking-wider text-amber-200 hover:text-yellow-400 transition"
+            
+          > {category.category_name}  </Link>
+           
+          
+          
         </li>
       ))}
     </ul>
