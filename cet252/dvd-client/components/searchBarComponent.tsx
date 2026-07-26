@@ -5,17 +5,21 @@
 
 import { useState, useEffect } from 'react'; //import useState and useEffect
 
+import { useRouter } from "next/navigation";
+
 import useMovieSearch from '../hooks/useMovieSearch'; //import searchMovie method
 
  //method to display the search bar and implement functionality
  export default function SearchBar()
  {
 
+    const router = useRouter();
+
     //create use state variables
     const [value, setValue] = useState('');
  
     //create a variable to store useMovieSearch's function
-    const {searchMovie} = useMovieSearch();
+    const {searchMovie, movies, loading, error} = useMovieSearch(value);
 
 
     //create the UI elements
@@ -37,7 +41,7 @@ import useMovieSearch from '../hooks/useMovieSearch'; //import searchMovie metho
             focus:outline-none
             focus:ring-2
             focus:ring-[#D4AF37]" placeholder="Search" onChange={(e)=>setValue(e.target.value)} required />
-            <button type="button" className="absolute end-1.5 bottom-1.5 text-white bg-brand hover:bg-blue-strong box-border border border-transparent focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded text-xs px-3 py-1.5 focus:outline-none" onClick={() =>searchMovie(value)}>Search</button>
+            <button type="button" className="absolute end-1.5 bottom-1.5 text-white bg-brand hover:bg-blue-strong box-border border border-transparent focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded text-xs px-3 py-1.5 focus:outline-none" onClick={() => router.push(`/movie_result/${value}`)}>Search</button>
             </div>
         </form>
          </>
