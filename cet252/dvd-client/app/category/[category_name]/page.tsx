@@ -83,7 +83,7 @@ if (error) return <p className="error">{error}</p>
            
 
              
-               <main className="mt-20" style={{ padding: "40px" }}>
+               <main className="mt-20 " style={{ padding: "40px" }}>
 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
          {data.movies.map((movie)=>
             <MovieDisplay key={movie.id} movie={movie}/>

@@ -28,13 +28,13 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-screen flex flex-col bg-[#000080">
+      <body>
 
      
         {/* create a nav bar displaying all the categories*/}
              
         <DisplayNavigationBar/>
-        <main className="bg-[#000080]">
+        <main className=" min-h-screen bg-white">
            {children}
           </main>
        
