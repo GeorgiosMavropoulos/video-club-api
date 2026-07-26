@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react'; //import useState and useEffect
 //searchMovie function which activates the search function in search bar
 
-export default function useMovieSearch()
+export default function useMovieSearch(movie_name)
  
 {
 
@@ -14,15 +14,15 @@ export default function useMovieSearch()
     const [error, setError] = useState<string | null>(null);//log error messages
 
     //search movie function
-   async function searchMovie(value)
+   async function searchMovie()
 {
-    console.log(value);
+    
   //try-catch for error handling
   try
   {
       setLoading(true); //setting loading into true
     //fetch the movie
-   const movie = await fetch(`http://localhost:4000/movies/title/${value}`);
+   const movie = await fetch(`http://localhost:4000/movies/title/${movie_name}`);
 
    //return an error message if title is empty
    if(!movie.ok)
@@ -34,9 +34,9 @@ export default function useMovieSearch()
     const returned_movie = await movie.json();
 
     //return an error message if movie does not exist
-    if(!returned_movie)
+    if(!returned_movie || returned_movie .length === 0)
     {
-        throw new Error(`The movie with title:${value} does not exist`);
+        throw new Error(`The movie you have searched for does not exists`);
     }
 
     //if all goes well return the movie
@@ -58,12 +58,18 @@ export default function useMovieSearch()
  
    
 }
-//return the hook
- return{
-    searchMovie,
+
+//create useEffect
+useEffect(()=>{
+    if(movie_name)
+    {
+               searchMovie();//call search movie method
+
+    }
+},[movie_name])
+return {
     movies,
     loading,
     error
-
-  };
+};
 }
