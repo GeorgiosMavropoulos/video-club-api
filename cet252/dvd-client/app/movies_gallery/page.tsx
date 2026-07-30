@@ -5,11 +5,26 @@ import { useState, useEffect } from 'react'; //import useState and useEffect
 //import the component
 import MovieDisplay from '../../components/movieCardComponent';
 
+//create a new interface
+interface MovieData {
+  id: number;
+  category_id: number;
+  title: string;
+  director: string;
+  date: string;
+  plot: string;
+  genre: string;
+  image: string;
+}
+
+interface MovieResponse {
+  movies: MovieData[];
+}
 //create a methos to display movies in landing page
 export default function MovieGalery()
 {
   //create useState variables
-const [data, setData] = useState(null);
+  const [data, setData] = useState<MovieResponse | null>(null);
 const [isLoading, setLoading] = useState(true);
 const [error, setError] = useState<string | null>(null);//log error messages
 
@@ -45,7 +60,11 @@ const [error, setError] = useState<string | null>(null);//log error messages
 
     }catch(error)
     {
-        setError(error.message);
+      if (error instanceof Error)
+      {
+             setError(error.message);
+      }
+       
        
     }
      finally
@@ -78,7 +97,7 @@ if (error) return <p className="error">{error}</p>
         <main className="mt-20" style={{ padding: "40px" }}>
       
 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-  {data.movies.map((movie)=>
+  {data?.movies?.map((movie)=>
        
             <MovieDisplay key ={movie.id} movie={movie}/>    
              

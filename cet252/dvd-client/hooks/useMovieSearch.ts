@@ -3,8 +3,8 @@
 
 import { useState, useEffect } from 'react'; //import useState and useEffect
 //searchMovie function which activates the search function in search bar
-
-export default function useMovieSearch(movie_name)
+interface Movie{}
+export default function useMovieSearch(movie_name: string)
  
 {
 
