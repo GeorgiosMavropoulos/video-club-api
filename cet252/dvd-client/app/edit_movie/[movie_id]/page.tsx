@@ -99,7 +99,7 @@ async function FetchMovie()
  if (isLoading) return <p>Loading...</p>
 
    //if there is an error
-if (error) return <p className="text-center text-green-200 text bold">Error:{error}</p>
+if (error) return alert(`${error}`)
   if (!data) return <p>Movies do not exist</p> //return that movies do not exist if failed to fetch data
 
 // return the jsx
