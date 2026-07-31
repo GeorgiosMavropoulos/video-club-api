@@ -6,11 +6,26 @@ import { useState, useEffect } from 'react'; //import useState and useEffect
 //import the component to display movie cards
 import MovieDisplay from '../../../components/movieCardComponent';
 
+//create a new interface
+interface MovieData {
+  id: number;
+  category_id: number;
+  title: string;
+  director: string;
+  date: string;
+  plot: string;
+  genre: string;
+  image: string;
+}
+
+interface MovieResponse {
+  movies: MovieData[];
+}
 
 //method to display movies by category
 export default function DisplayMoviesByCategory(){
       //create useState variables
-const [data, setData] = useState(null);
+const [data, setData] = useState<MovieResponse | null>(null);
 const [isLoading, setLoading] = useState(true);
 const [error, setError] = useState<string | null>(null);//log error messages
 
@@ -85,7 +100,7 @@ if (error) return <p className="error">{error}</p>
              
                <main className="mt-20 " style={{ padding: "40px" }}>
 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-         {data.movies.map((movie)=>
+         {data?.movies?.map((movie)=>
             <MovieDisplay key={movie.id} movie={movie}/>
          )}
     
