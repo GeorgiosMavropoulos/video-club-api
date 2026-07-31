@@ -53,6 +53,7 @@ export default function useMovieSearch(movie_name: string)
   finally
   {
      setLoading(false);
+     
   }
 
  

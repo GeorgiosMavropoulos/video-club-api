@@ -21,7 +21,7 @@ const EditButtonComponent = ({id}:Props)=>{
       <div className="flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
      
       
-        <Link href={`/movies/edit/${id}`}>
+        <Link href={`/edit_movie/${id}`}>
          <button 
      className="px-5 py-2.5 text-sm font-bold uppercase tracking-wider text-amber-950 bg-gradient-to-r from-amber-400 via-gold to-yellow-500 hover:from-amber-300 
      hover:to-yellow-400 active:scale-95 rounded-full shadow-lg shadow-amber-500/20 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
