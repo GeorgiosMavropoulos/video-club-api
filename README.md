@@ -1,4 +1,4 @@
----------------------------------------------------------------------------------------------------ATTENTION---------------------------------------------------------------------------------------------------
+ATTENTION
 Migrating this product into NextJS framework. I am creating a new UI and new endpoints inside NextJS. Files might look a little messy till I finish
 
 DVD ESCAPE CLIENT APPLICATION AND API WITH CRUD FUNCTIONALITY RUNNING ON NODE.JS EXPRESS SERVER
