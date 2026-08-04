@@ -5,6 +5,69 @@ import db from '@/lib/db';
 import { NextRequest, NextResponse } from 'next/server';
 
 
+/*
+**
+ * @api {get} /movies  Get All Movies
+ * @apiName GetAllMovies
+ * @apiGroup Movies
+ *
+ * @apiDescription
+ * Retrieves all movies from the database.
+ *  
+ * The endpoint:
+ *   - Returns HTTP **200 OK** with a JSON list of movies.
+ *   - Returns HTTP **404 Not Found** if no movies exist.
+ *   - Returns HTTP **500 Internal Server Error** for database errors.
+ *
+ * @apiSuccess (200 OK) {Object[]} movies                  Array of movie objects.
+ * @apiSuccess (200 OK) {Number} movies.id                 Movie unique ID.
+ * @apiSuccess (200 OK) {Number} movies.category_id        Category ID referencing `categories` table.
+ * @apiSuccess (200 OK) {String} movies.title              Movie title.
+ * @apiSuccess (200 OK) {String} movies.director           Movie director.
+ * @apiSuccess (200 OK) {String} movies.date               Release date.
+ * @apiSuccess (200 OK) {String} movies.plot               Short plot summary.
+ * @apiSuccess (200 OK) {String} movies.genre              Genre/category name.
+ * @apiSuccess (200 OK) {String} movies.image              Image URL/path.
+ *
+ * @apiSuccessExample {json} Response Example (200):
+ * {
+ *   "movies": [
+ *     {
+ *       "id": 2,
+ *       "category_id": 1,
+ *       "title": "Superbad",
+ *       "director": "Greg Mottola",
+ *       "date": "2008",
+ *       "plot": "Two high school buddies try to make the most of their last days before graduation.",
+ *       "genre": "Comedy",
+ *       "image": "/uploads/superbad.jpeg"
+ *     }
+ *   ]
+ * }
+ *
+ * @apiError (404 Not Found) {String} message   No movies found in the database.
+ *
+ * @apiErrorExample {json} Response Example (404):
+ * {
+ *   "message": "Cannot find any movies"
+ * }
+ *
+ * @apiError (500 Internal Server Error) {String} message  Database error.
+ *
+ * @apiErrorExample {json} Response Example (500):
+ * {
+ *   "message": "Error while trying to retrieve all movies"
+ * }
+ *
+ * @apiExample  Example Request:
+ *  GET http://localhost:3000/movies
+ *
+ * @apiNotes
+ * - This endpoint uses `db.prepare('Select * From movies').all();` to fetch all rows from the database.
+ * - Even if 1 movie exists, it returns 200.
+ * - If the database table is empty, a 404 status is returned.
+ */
+
 //create get all movies endpoint
 export async function GET(req:NextRequest)
 {
@@ -39,3 +102,5 @@ export async function GET(req:NextRequest)
     }
 
 }
+
+
