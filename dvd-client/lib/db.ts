@@ -17,15 +17,30 @@ const globalForDb = globalThis as unknown as {
 //create the db path object to store the database
 const dbPath = path.join(process.cwd() , process.env.SQLITE_DB_PATH || '');
 
+ 
 //declare a function to intialize DB
 const connectToDatabase =  () =>{
 
-console.log("SQLITE_DB_PATH:", process.env.SQLITE_DB_PATH);
-console.log("DB PATH:", dbPath);
+
+ 
+   //if connection exists at first, return the connection
+        if (globalForDb.db) {
+        return globalForDb.db;
+    }
 
     try{
-         globalForDb.db??= new Database(dbPath,{ fileMustExist: true });
-     
+         
+        
+        
+            // 1. Ensure the directory structure exists before creating the file
+        const dir = path.dirname(dbPath);
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+        }
+        
+        globalForDb.db??= new Database(dbPath,{ fileMustExist: false });
+
+   
     
 
     //return a success message if connection has been established
