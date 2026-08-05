@@ -80,12 +80,7 @@ export async function GET(req:NextRequest)
     try
     {
 
-        //return an error message if db is not initialized
-        if(!db)
-        {
-            return NextResponse.json({message:'Database connection failed'},{status:500});
-        }
-
+      
         //create the statement
         const movies = movie_obj.GetAllMovies(); //retrieve all movies
 
@@ -101,9 +96,18 @@ export async function GET(req:NextRequest)
 
     }catch(e: unknown)
     {
+          if (e instanceof Error) {
+        return NextResponse.json(
+            {
+                message: e.message
+            },
+            { status: 500 }
+        ); //catch specific errors from backend
+    }
+
         
 
-        return NextResponse.json({message:`Internal Server Error`},{status:500})
+        return NextResponse.json({message:`Internal Server Error`, },{status:500})
     }
 
 }
