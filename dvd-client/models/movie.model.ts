@@ -90,21 +90,18 @@ class MovieModel {
         this.image = image;
     }
 
-
+ 
 
 
     //get all movies method
    public  GetAllMovies()
     {
-        //validate that conncetion has been established
-        if(this.isConnected())
-        {
-           return  db ? db.prepare('Select * From movies').all() : [];
-        }
-        else
-        {
-            throw new Error("Database connection failed"); //throw an exception if connection has not been established
-        }
+        //create a DB object if connection is active, else the helper method below will return an error
+        const database = this.GetDataBase();
+        
+        return  database ? database.prepare('Select * From movies').all() : [];
+       
+        
         
     }
 
@@ -119,6 +116,18 @@ class MovieModel {
     {
         return true;
     }
+
+    }
+
+    //create a helper method to establish connection with DB
+    private GetDataBase(){
+
+        if(!this.isConnected())
+        {
+              throw new Error("Database connection failed"); //throw an exception if connection has not been established
+          
+        }
+        return db;//return the database if connction has been established
 
     }
 
