@@ -39,6 +39,22 @@ class Categories
 
 
 
+    //get all categories method from db
+    public GetAllCategories()
+    {
+        if(this.isConnected())
+        {
+             return  db ? db.prepare('Select * From categories').all() : [];
+         }
+         else
+       {
+                     throw new Error("Database connection failed"); //throw an exception if connection has not been established
+     }
+    }
+
+
+
+
         //helper method to return an error message if system cannot establish db conneciton
         private  isConnected(): Boolean
         {
