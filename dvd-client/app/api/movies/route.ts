@@ -4,6 +4,8 @@ import db from '@/lib/db';
 //import next response + request
 import { NextRequest, NextResponse } from 'next/server';
 
+//import movie model
+import MovieModel from '../../../models/movie.model';
 
 /*
 **
@@ -82,7 +84,7 @@ export async function GET(req:NextRequest)
         }
 
         //create the statement
-        const movies = db.prepare('Select * From movies').all(); //retrieve all movies
+        const movies = MovieModel.GetAllMovies; //retrieve all movies
 
         //return an error message if no movie exists
         if(movies.length === 0)
@@ -92,7 +94,7 @@ export async function GET(req:NextRequest)
         }
 
         //if all goes well and atleast one movie exists, return it
-        return NextResponse.json({message:`Success`,movies},{status:200});
+        return NextResponse.json({message:`Success`,Movie:movies},{status:200});
 
     }catch(e: unknown)
     {
