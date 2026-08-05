@@ -73,18 +73,16 @@ import MovieModel from '../../../models/movie.model';
 //create get all movies endpoint
 export async function GET(req:NextRequest)
 {
+
+    //create a movie model object
+    const movie_obj = new MovieModel()
     //try-catch to handle errors
     try
     {
 
-        //return an error message if db is not initialized
-        if(!db)
-        {
-            return NextResponse.json({message:'Database connection failed'},{status:500});
-        }
-
+      
         //create the statement
-        const movies = MovieModel.GetAllMovies; //retrieve all movies
+        const movies = movie_obj.GetAllMovies(); //retrieve all movies
 
         //return an error message if no movie exists
         if(movies.length === 0)
@@ -98,9 +96,18 @@ export async function GET(req:NextRequest)
 
     }catch(e: unknown)
     {
+          if (e instanceof Error) {
+        return NextResponse.json(
+            {
+                message: e.message
+            },
+            { status: 500 }
+        ); //catch specific errors from backend
+    }
+
         
 
-        return NextResponse.json({message:`Internal Server Error`},{status:500})
+        return NextResponse.json({message:`Internal Server Error`, },{status:500})
     }
 
 }
