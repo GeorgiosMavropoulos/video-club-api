@@ -235,6 +235,97 @@ class Categories
 
 
 
+    /**
+ * @api {delete} /movies/categories/del/:category_name  Delete a Category by its name
+ * @apiName DeleteCategory
+ * @apiGroup Categories
+ *
+ * @apiDescription
+ * Deletes a specific category from the `categories` table using its category_name.
+ *
+ * The endpoint validates:
+ * - If the category_name  provided is valid
+ * - If the category exists before gets deleted
+ *
+ *
+ * @apiParam (URL Path) {String} category_name  
+ * The name of the category you want to delete.
+ *
+ *
+ * @apiSuccess (200 OK) {String} message  
+ * Success message indicating the category was deleted.
+ *
+ * @apiSuccessExample {json} Success Response (200):
+ * {
+ *   "message": "Success the category:tv show has been deleted"
+ * }
+ *
+ *
+ * @apiError (400 Bad Request) {String} message  
+ * It is returned when the category_name is missing or invalid.
+ *
+ * @apiErrorExample {json} Invalid category_name (400):
+ * {
+ *   "message": "Please specify the category name you wish to delete"
+ * }
+ *
+ *
+ * @apiError (404 Not Found) {String} message  
+ * It is returned when no category exists with the specified category_name.
+ *
+ * @apiErrorExample {json} Category Not Found (404):
+ * {
+ *   "message": "The category:sitcom does not exists"
+ * }
+ *
+ *
+ * @apiError (500 Internal Server Error) {String} message  
+ * It is returned when a database error occurs while trying to delete.
+ *
+ * @apiErrorExample {json} Database Error (500):
+ * {
+ *   "message": "Error deleting the category :tv show"
+ * }
+ *
+ *
+ * @apiExample  Example Request:
+ *  http://localhost:4000/movies/categories/del/tv show
+ *
+ *
+ * @apiNotes
+ * - Uses `this.changes` provided  to verify
+ *   whether a row was deleted or not.
+ * - It returns a very clean,  message for each failure.
+  */
+
+
+    //create delete category method
+
+    public DeleteCategory(category_name:string)
+    {
+
+        //create a DB object if connection is active, else the helper method below will return an error
+        const database = this.GetDataBase();
+
+        //verify whether category exists or not
+        //call GetCategoryByName method
+        const category_name_exists = this.GetCategoryByName(category_name);
+
+        //return an error message if this category exists
+        if(category_name_exists)
+        {
+            throw new Error("Category already exists");
+        }
+        else
+        {
+              return  database?.prepare('Delete *FROM categories where category_name = ?').run(category_name);
+
+        }
+
+    }
+
+
+
 
         //helper method to return an error message if system cannot establish db conneciton
         private  isConnected(): Boolean
