@@ -53,6 +53,16 @@ class Categories
     }
 
 
+
+    //get a specific category by id method
+    public GetCategoryById(id:number)
+    {
+         //create a DB object if connection is active, else the helper method below will return an error
+        const database = this.GetDataBase();
+
+         return  database?.prepare('Select * From categories where id = ?').get(id); //get the id from the parameters
+
+    }
     //insert into DB method
 
 
