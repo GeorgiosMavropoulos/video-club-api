@@ -40,17 +40,20 @@ class Categories
 
 
     //get all categories method from db
-    public GetAllCategories()
+        //get all movies method
+   public  GetAllCategories()
     {
-        if(this.isConnected())
-        {
-             return  db ? db.prepare('Select * From categories').all() : [];
-         }
-         else
-       {
-                     throw new Error("Database connection failed"); //throw an exception if connection has not been established
-     }
+        //create a DB object if connection is active, else the helper method below will return an error
+        const database = this.GetDataBase();
+        
+        return  database ? database.prepare('Select * From categories').all() : [];
+       
+        
+        
     }
+
+
+    //insert into DB method
 
 
 
@@ -68,4 +71,17 @@ class Categories
         }
     
         }
+
+
+           //create a helper method to establish connection with DB
+            private GetDataBase(){
+        
+                if(!this.isConnected())
+                {
+                      throw new Error("Database connection failed"); //throw an exception if connection has not been established
+                  
+                }
+                return db;//return the database if connction has been established
+        
+            }
 }
