@@ -325,6 +325,31 @@ class Categories
     }
 
 
+    //method to update category's name
+    public UpdateCategory(category_id:number,category_name:string)
+    {
+         //create a DB object if connection is active, else the helper method below will return an error
+        const database = this.GetDataBase();
+
+        //verify whether category exists or not
+         //call GetCategoryByName method
+        const category_name_exists = this.GetCategoryByName(category_name);
+       
+
+        //return an error message if this category exists
+        if(category_name_exists)
+        {
+            throw new Error("Category already exists");
+        }
+        else
+        {
+              return  database?.prepare('Update categories set category_name = ? where category_id = ?').run(category_id);
+
+        }
+
+    }
+
+
 
 
         //helper method to return an error message if system cannot establish db conneciton
