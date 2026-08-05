@@ -38,7 +38,17 @@ class Categories
 
 
 
-
+/**
+ * Retrieves all categories from the database.
+ *
+ * This method establishes a database connection through the helper method
+ * and executes a query to return all available categories.
+ *
+ * @throws {Error} Throws an error if the database connection is unavailable.
+ *
+ * @returns An array containing all categories from the database.
+ * Returns an empty array if no categories exist.
+ */
     //get all categories method from db
         //get all movies method
    public  GetAllCategories()
@@ -53,6 +63,19 @@ class Categories
     }
 
 
+
+    /**
+ * Retrieves a specific category by its unique identifier.
+ *
+ * This method searches the categories table and returns the category
+ * that matches the provided ID.
+ *
+ * @param {number} id - The unique identifier of the category.
+ *
+ * @throws {Error} Throws an error if the database connection is unavailable.
+ *
+ * @returns The category object if found, otherwise undefined.
+ */
 
     //get a specific category by id method
     public GetCategoryById(id:number)
@@ -324,7 +347,21 @@ class Categories
 
     }
 
-
+    /**
+ * Updates the name of an existing category.
+ *
+ * This method checks whether the provided category name already exists.
+ * If another category with the same name is found, an error is thrown.
+ * Otherwise, the category name is updated in the database.
+ *
+ * @param {number} category_id - The unique identifier of the category to update.
+ * @param {string} category_name - The new name that will be assigned to the category.
+ *
+ * @throws {Error} Throws an error if the database connection is unavailable
+ * or if a category with the same name already exists.
+ *
+ * @returns The result of the update operation.
+ */
     //method to update category's name
     public UpdateCategory(category_id:number,category_name:string)
     {
