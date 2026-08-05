@@ -73,6 +73,9 @@ import MovieModel from '../../../models/movie.model';
 //create get all movies endpoint
 export async function GET(req:NextRequest)
 {
+
+    //create a movie model object
+    const movie_obj = new MovieModel()
     //try-catch to handle errors
     try
     {
@@ -84,7 +87,7 @@ export async function GET(req:NextRequest)
         }
 
         //create the statement
-        const movies = MovieModel.GetAllMovies; //retrieve all movies
+        const movies = movie_obj.GetAllMovies(); //retrieve all movies
 
         //return an error message if no movie exists
         if(movies.length === 0)
