@@ -52,7 +52,7 @@ import { NextRequest, NextResponse } from 'next/server';
  * }
  *
  * @apiExample  Example Request:
- *     *http://localhost:3000/app/api/categories
+ *     *http://localhost:3000/api/categories
  *
  * @apiNotes
  * - This endpoint uses `DB.all()` to fetch all category rows from the database.
@@ -145,7 +145,7 @@ export async function GET(req:NextRequest)
  * }
  *
  * @apiExample  Example Request:
- *http://localhost:3000/app/api/categories \
+ *http://localhost:3000/api/categories \
  *       
  *      '{"category_name": "tv show"}'
  *
@@ -161,13 +161,25 @@ export async function POST(req:NextRequest)
     try
     {
           //create the body
-    const category_name:string = JSON.stringify(req.body); //I stringified it since backend waits for a string
+          const body = await req.json();
+
+
+    const category_name:string = body.category_name;//I stringified it since backend waits for a string
+
+    //return an error message if category name has not been given
+    if(!category_name)
+    {
+        return NextResponse.json({message:`Please provide category's name`},{status:400});
+    }
 
     //create a categories object
     const category = new Categories()
 
     //createc category
     const create_category = await category.CreateCategory(category_name);
+
+    //return a response if all goes well
+    return NextResponse.json({message:`Success the category ${category_name} has been created`});
 
     }catch(e)
     {
