@@ -12,6 +12,64 @@ interface RouteContext {
 }
 
 
+
+
+/**
+ * @api {get} /api/category_by_id/:category_id Get Category by ID
+ * @apiName GetCategoryById
+ * @apiGroup Categories
+ *
+ * @apiDescription
+ * Retrieves a category from the database using its unique ID.
+ *
+ * @apiParam {Number} category_id
+ * The unique ID of the category to retrieve.
+ *
+ * @apiSuccess {String} message
+ * Returns "Success" when the category is found.
+ *
+ * @apiSuccess {Object} Categories
+ * The category retrieved from the database.
+ *
+ * @apiSuccessExample {json} Success-Response:
+ * HTTP/1.1 200 OK
+ * {
+ *   "message": "Success",
+ *   "Categories": {
+ *     "category_id": 1,
+ *     "category_name": "Comedy"
+ *   }
+ *
+ * @apiError {String} message
+ * Category ID was not provided.
+ *
+ * @apiErrorExample {json} Missing-ID:
+ * HTTP/1.1 400 Bad Request
+ * {
+ *   "message": "Please provide category's id"
+ * }
+ *
+ * @apiError {String} message
+ * No category exists with the provided ID.
+ *
+ * @apiErrorExample {json} Category-Not-Found:
+ * HTTP/1.1 404 Not Found
+ * {
+ *   "message": "The category with id 1, does not exist"
+ * }
+ *
+ * @apiError {String} message
+ * An internal server or database error occurred.
+ *
+ * @apiErrorExample {json} Server-Error:
+ * HTTP/1.1 500 Internal Server Error
+ * {
+ *   "message": "Internal server error"
+ * }
+ */
+
+
+
 //get category by its name endpoint
 export async function GET(req:Request, { params }: RouteContext)
 {
