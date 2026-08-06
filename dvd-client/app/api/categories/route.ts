@@ -164,7 +164,7 @@ export async function POST(req:NextRequest)
           const body = await req.json();
 
 
-    const category_name:string = body.category_name;//I stringified it since backend waits for a string
+    const category_name:string = body.category_name;
 
     //return an error message if category name has not been given
     if(!category_name)
@@ -175,11 +175,15 @@ export async function POST(req:NextRequest)
     //create a categories object
     const category = new Categories()
 
+    //capitalize the first letter only and add in lower case the other one unregarded what user inserts
+    const formattedCategoryName =
+  category_name.charAt(0).toUpperCase() + category_name.slice(1).toLowerCase();
+
     //createc category
-    const create_category = await category.CreateCategory(category_name);
+    const create_category = await category.CreateCategory(formattedCategoryName);
 
     //return a response if all goes well
-    return NextResponse.json({message:`Success the category ${category_name} has been created`});
+    return NextResponse.json({message:`Success the category ${formattedCategoryName} has been created`});
 
     }catch(e)
     {
@@ -196,3 +200,83 @@ export async function POST(req:NextRequest)
 
     
 }
+
+ /*  **
+ * @api {get} /movies/categories/:category_name  Get Movies by Category
+ * @apiName GetMoviesByCategory
+ * @apiGroup Categories
+ *
+ * @apiDescription
+ * Retrieves **all movies** belonging to a specific category.
+ * 
+ * The endpoint:
+ *   - Accepts a category name (case-insensitive)
+ *   - Returns a list of movies belonging to this category (if any)
+ *   - Returns **404** when the category does not exist OR the category exists but has no movies
+ *   - Returns **400** if no category name is provided
+ *   - Returns **500** if a database error occurs
+ *
+ * @apiParam (URL Parameter) {String} category_name  
+ * The name of the category to search for (case-insensitive).
+ *
+ * @apiSuccess (200 OK) {Object[]} movies                Array of movies belonging to the category.
+ * @apiSuccess (200 OK) {Number}   movies.id             Movie ID.
+ * @apiSuccess (200 OK) {Number}   movies.category_id    Category ID associated with the movie.
+ * @apiSuccess (200 OK) {String}   movies.title          Movie title.
+ * @apiSuccess (200 OK) {String}   movies.director       Director's name.
+ * @apiSuccess (200 OK) {String}   movies.date           Release date.
+ * @apiSuccess (200 OK) {String}   movies.plot           Movie plot/summary.
+ * @apiSuccess (200 OK) {String}   movies.genre          Movie genre.
+ * @apiSuccess (200 OK) {String}   movies.image          Image URL or path.
+ *
+ * @apiSuccessExample {json} Success Response (200):
+ * {
+ *   "movies": [
+ *     {
+ *       "id": 2,
+ *       "category_id": 2,
+ *       "title": "Superbad",
+ *       "director": "Greg Mottola",
+ *       "date": "2008",
+ *       "plot": "Two high school buddies try to make the most of their last days before graduation",
+ *       "genre": "Comedy",
+ *       "image": "/uploads/superbad.jpeg"
+ *     }
+ *   ]
+ * }
+ *
+ * @apiError (400 Bad Request) {String} message  
+ * Missing  category name.
+ *
+ * @apiErrorExample {json} Missing Category Name (400):
+ * {
+ *   "message": "Please provide category name"
+ * }
+ *
+ * @apiError (404 Not Found) {String} message  
+ * No movies found OR category does not exist.
+ *
+ * @apiErrorExample {json} Not Found (404):
+ * {
+ *   "message": "There aren't any movies registered on this category or the category you are looking for does not exist."
+ * }
+ *
+ * @apiError (500 Internal Server Error) {String} message  
+ * Database or query execution error.
+ *
+ * @apiErrorExample {json} Database Error (500):
+ * {
+ *   "message": "Error while retreiving data"
+ * }
+ *
+ * @apiExample  Example Request:
+ *    http://localhost:4000/movies/categories/Comedy
+ *
+ * @apiNotes
+ * - Category matching is **case-insensitive** due to `LOWER()` usage in SQL.
+ * - A SQL JOIN is used in order to join movies from movie table with each category from category table belonging to a movie.
+ * - If the category exists but has no associated movies, the endpoint returns 404.
+ * - Logs errors internally for debugging (`console.error`).
+ */
+
+//get category by its name endpoint
