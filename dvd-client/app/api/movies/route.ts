@@ -82,7 +82,7 @@ export async function GET(req:NextRequest)
 
       
         //create the statement
-        const movies = movie_obj.GetAllMovies(); //retrieve all movies
+        const movies = await movie_obj.GetAllMovies(); //retrieve all movies
 
         //return an error message if no movie exists
         if(movies.length === 0)

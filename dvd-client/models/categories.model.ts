@@ -38,17 +38,7 @@ class Categories
 
 
 
-/**
- * Retrieves all categories from the database.
- *
- * This method establishes a database connection through the helper method
- * and executes a query to return all available categories.
- *
- * @throws {Error} Throws an error if the database connection is unavailable.
- *
- * @returns An array containing all categories from the database.
- * Returns an empty array if no categories exist.
- */
+
     //get all categories method from db
         //get all movies method
    public  GetAllCategories()
@@ -178,57 +168,7 @@ class Categories
 
 
 
-    /**
- * @api {post} /movies/categories  Create a New Category
- * @apiName CreateCategory
- * @apiGroup Categories
- *
- * @apiDescription
- * Inserts a **new movie category** into the `categories` table.
- *  
- * Validates input and ensures that:
- * - Category name is provided and not empty
- * - Returns clear error messages for invalid input or database failures
- *
- * This endpoint enables users to add manually movie categories!.
- *
- * @apiBody {String} category_name  
- * Category`s name to insert.
- *
- * @apiSuccess (201 Created) {String} message  
- * Success message which confirms that the category was created.
- *
- * @apiSuccessExample {json} Success Response (201):
- * {
- *   "message": "Created!"
- * }
- *
- * @apiError (400 Bad Request) {String} message  
- * It's returned when category_name is  empty.
- *
- * @apiErrorExample {json} Missing Name (400):
- * {
- *   "message": "Please add a category name"
- * }
- *
- * @apiError (500 Internal Server Error) {String} message  
- * It is returned when  database errors prevent insertion.
- *
- * @apiErrorExample {json} Database Error (500):
- * {
- *   "message": "Error while trying to insert new data"
- * }
- *
- * @apiExample  Example Request:
- *http://localhost:4000/movies/categories \
- *       
- *      '{"category_name": "tv show"}'
- *
- * @apiNotes
- * - Category names are **not validated for uniqueness**. Duplicate categories may be created unless the DB enforces constraints.
- *
- * - Successful insertion returns **201 Created**.
- */
+  
 
 
     //insert into DB method
@@ -416,3 +356,6 @@ class Categories
         
             }
 }
+
+//export categories class
+export default Categories;
