@@ -76,15 +76,16 @@ export async function GET(req:Request, { params }: RouteContext)
          // Await the params object to resolve it
           const resolvedParams = await params;
 
-          //return an error message if category name has not been provided
-          if(!resolvedParams)
-          {
-             return NextResponse.json({message:`Please provide category's name`},{status:400});
-          }
+         
 
           //create the category_name object to store value from the url
           const category_name = resolvedParams.category_name;
-
+          
+           //return an error message if category name has not been provided
+          if(!category_name )
+          {
+             return NextResponse.json({message:`Please provide category's name`},{status:400});
+          }
 
           //create a categories object
           const category = new Categories();
