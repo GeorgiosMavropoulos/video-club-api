@@ -188,7 +188,7 @@ class Categories
         }
         else
         {
-              return  database?.prepare('Insert into categories(category_name)values(?)').run();
+              return  database?.prepare('Insert into categories (category_name) values(?)').run(category_name);
 
         }
 
@@ -199,7 +199,7 @@ class Categories
 
 
     /**
- * @api {delete} /movies/categories/del/:category_name  Delete a Category by its name
+ * @api {delete} /api/cateogories/:category_name Delete a Category by its name
  * @apiName DeleteCategory
  * @apiGroup Categories
  *
@@ -252,7 +252,7 @@ class Categories
  *
  *
  * @apiExample  Example Request:
- *  http://localhost:4000/movies/categories/del/tv show
+ *  http://localhost:3000/api/categories/Comedy
  *
  *
  * @apiNotes
