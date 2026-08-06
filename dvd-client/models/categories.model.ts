@@ -2,7 +2,15 @@
 //import database
 import db from '@/lib/db';
 
+//creating a type so TS will know what kind of attributes the array from DB returns
+type Category = {
+    category_id: number;
+    category_name: string;
+};
+
 //categories class
+
+
 
 class Categories
 {
@@ -199,9 +207,9 @@ class Categories
         const category_name_exists = this.GetCategoryByName(category_name);
 
         //return an error message if this category exists
-        if(category_name_exists)
+        if(!category_name_exists)
         {
-            throw new Error("Category already exists");
+            throw new Error("Category does not exist");
         }
         else
         {
@@ -232,19 +240,33 @@ class Categories
          //create a DB object if connection is active, else the helper method below will return an error
         const database = this.GetDataBase();
 
-        //verify whether category exists or not
-         //call GetCategoryByName method
-        const category_name_exists = this.GetCategoryByName(category_name);
-       
+        
+        
+        //verify if a category with the give id exist
+        const id_exists = this.GetCategoryById(category_id)
 
-        //return an error message if this category exists
-        if(category_name_exists)
+        //return an error if id does not exists
+        if(!id_exists)
         {
+            throw new Error(`The category with id: ${category_id} does not exist`);
+        }
+        
+        //verify whether category's name exist or not
+         //call GetCategoryByName method
+        const category_name_exists = database?.prepare(`Select *FROM categories where category_name = ?`).get(category_name)as Category | undefined;;
+               
+
+        //return an error message if this category exists. 
+        // I validate if there's anothert category with different id and the same category name to validate if there's another category with the name I want to provide
+        if(category_name_exists && category_name_exists.category_id !== category_id)
+        {
+            
             throw new Error("Category already exists");
         }
         else
         {
-              return  database?.prepare('Update categories set category_name = ? where category_id = ?').run(category_id);
+            
+              return  database?.prepare('Update categories set category_name = ? where category_id = ?').run(category_name,category_id);
 
         }
 
