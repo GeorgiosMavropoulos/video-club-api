@@ -1,10 +1,13 @@
 //import database
 import db from '@/lib/db';
 
+//import categories model
+import Categories from '@/models/categories.model';
+
 //import next response + request
 import { NextRequest, NextResponse } from 'next/server';
 /**
- * @api {get} /movies/categories  Get All Categories
+ * @api GET  * app/api/categories  Get All Categories
  * @apiName GetAllCategories
  * @apiGroup Categories
  *
@@ -49,10 +52,11 @@ import { NextRequest, NextResponse } from 'next/server';
  * }
  *
  * @apiExample  Example Request:
- *    http://localhost:4000/movies/categories
+ *     *http://localhost:3000/app/api/categories
  *
  * @apiNotes
  * - This endpoint uses `DB.all()` to fetch all category rows from the database.
+ * -Code exists in the classe's method GetAllCategoriess
  * - If the table exists but is empty, the endpoint returns 404.
  * - Logs database errors to the console for debugging.
  */
@@ -65,30 +69,118 @@ export async function GET(req:NextRequest)
         try
         {
     
-            //return an error message if db is not initialized
-            if(!db)
+            //create categories object
+            const category = new Categories();
+
+            //execute the function to get all categories from Databse. This function handles all the erros and connection errors
+            const get_categories = await category.GetAllCategories();
+
+            //return an error message if categories does not exist
+            if(!get_categories || get_categories.length === 0)
             {
-                return NextResponse.json({message:'Database connection failed'},{status:500});
-            }
-    
-            //create the statement
-            const categories = db.prepare('Select * From categories').all(); //retrieve all categories
-    
-            //return an error message if no category exists
-            if(categories.length === 0)
-            {
-                //return an error code
                 return NextResponse.json({message:`Currently there aren't any categories available`},{status:404});
             }
+
+            //if all goes well, return categories object
+            return NextResponse.json({message:'Success',Categories:get_categories},{status:200})
     
-            //if all goes well and atleast one movie exists, return it
-            return NextResponse.json({message:`Success`,categories},{status:200});
+           
     
         }catch(e: unknown)
         {
-            
+              if (e instanceof Error) {
+        return NextResponse.json(
+            {
+                message: e.message
+            },
+            { status: 500 }
+           ); //catch specific errors from backend
+              
     
             return NextResponse.json({message:`Internal Server Error`},{status:500})
         }
+    
+}
+}
+
+  /**
+ * @api {post} /movies/categories  Create a New Category
+ * @apiName CreateCategory
+ * @apiGroup Categories
+ *
+ * @apiDescription
+ * Inserts a **new movie category** into the `categories` table.
+ *  
+ * Validates input and ensures that:
+ * - Category name is provided and not empty
+ * - Returns clear error messages for invalid input or database failures
+ *
+ * This endpoint enables users to add manually movie categories!.
+ *
+ * @apiBody {String} category_name  
+ * Category`s name to insert.
+ *
+ * @apiSuccess (201 Created) {String} message  
+ * Success message which confirms that the category was created.
+ *
+ * @apiSuccessExample {json} Success Response (201):
+ * {
+ *   "message": "Created!"
+ * }
+ *
+ * @apiError (400 Bad Request) {String} message  
+ * It's returned when category_name is  empty.
+ *
+ * @apiErrorExample {json} Missing Name (400):
+ * {
+ *   "message": "Please add a category name"
+ * }
+ *
+ * @apiError (500 Internal Server Error) {String} message  
+ * It is returned when  database errors prevent insertion.
+ *
+ * @apiErrorExample {json} Database Error (500):
+ * {
+ *   "message": "Error while trying to insert new data"
+ * }
+ *
+ * @apiExample  Example Request:
+ *http://localhost:3000/app/api/categories \
+ *       
+ *      '{"category_name": "tv show"}'
+ *
+ * @apiNotes
+ * - Category names are **not validated for uniqueness**. Duplicate categories may be created unless the DB enforces constraints.
+ *
+ * - Successful insertion returns **201 Created**.
+ */
+//create a new category endpoint (POST)
+export async function POST(req:NextRequest) 
+{
+    //try catch block to handle errors
+    try
+    {
+          //create the body
+    const category_name:string = JSON.stringify(req.body); //I stringified it since backend waits for a string
+
+    //create a categories object
+    const category = new Categories()
+
+    //createc category
+    const create_category = await category.CreateCategory(category_name);
+
+    }catch(e)
+    {
+       //handle errors coming from class methods
+       if(e instanceof Error)
+       {
+        return NextResponse.json({message: e.message},{status:500});
+       }
+
+        return NextResponse.json({message: `Internal server error`},{status:500});
+    }
+    
+  
+
     
 }
