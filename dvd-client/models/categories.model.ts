@@ -2,7 +2,18 @@
 //import database
 import db from '@/lib/db';
 
+//import the error class
+import AppError from '@/errors/AppError';
+
+//creating a type so TS will know what kind of attributes the array from DB returns
+type Category = {
+    category_id: number;
+    category_name: string;
+};
+
 //categories class
+
+
 
 class Categories
 {
@@ -73,7 +84,17 @@ class Categories
          //create a DB object if connection is active, else the helper method below will return an error
         const database = this.GetDataBase();
 
-         return  database?.prepare('Select * From categories where id = ?').get(id); //get the id from the parameters
+        const category = database?.prepare('Select * From categories where id = ?').get(id) as Category | undefined; //get the id from the parameters
+
+        //return an error message if category does not exists
+        if(!category)
+         {
+            throw new AppError("Category does not exist",404);
+         }
+
+         return category;//return the category if all goes well
+
+
 
     }
 
@@ -85,7 +106,19 @@ class Categories
         const database = this.GetDataBase();
         
 
-         return  database?.prepare('Select * From categories where category_name = ?').get(category_name); //get the category from the parameters
+          const category =  database?.prepare('Select * From categories where category_name = ?').get(category_name) as Category | undefined;  //get the category from the parameters
+
+          //return an error message if category does not exists
+           //return an error message if category does not exists
+        if(!category)
+         {
+            throw new AppError("Category does not exist",404);
+         }
+    
+
+         //return the category if all goes well
+         return category;
+          
 
     }
 
@@ -108,7 +141,7 @@ class Categories
         //return an error message if this category exists
         if(category_name_exists)
         {
-            throw new Error("Category already exists");
+            throw new AppError("Category already exists", 409);
         }
         else
         {
@@ -199,9 +232,9 @@ class Categories
         const category_name_exists = this.GetCategoryByName(category_name);
 
         //return an error message if this category exists
-        if(category_name_exists)
+        if(!category_name_exists)
         {
-            throw new Error("Category already exists");
+            throw new AppError("Category does not exist",404);
         }
         else
         {
@@ -232,19 +265,33 @@ class Categories
          //create a DB object if connection is active, else the helper method below will return an error
         const database = this.GetDataBase();
 
-        //verify whether category exists or not
-         //call GetCategoryByName method
-        const category_name_exists = this.GetCategoryByName(category_name);
-       
+        
+        
+        //verify if a category with the give id exist
+        const id_exists = this.GetCategoryById(category_id)
 
-        //return an error message if this category exists
-        if(category_name_exists)
+        //return an error if id does not exists
+        if(!id_exists)
         {
-            throw new Error("Category already exists");
+            throw new AppError(`The category with id: ${category_id} does not exist`,404);
+        }
+        
+        //verify whether category's name exist or not
+         //call GetCategoryByName method
+        const category_name_exists = database?.prepare(`Select *FROM categories where category_name = ?`).get(category_name)as Category | undefined;;
+               
+
+        //return an error message if this category exists. 
+        // I validate if there's anothert category with different id and the same category name to validate if there's another category with the name I want to provide
+        if(category_name_exists && category_name_exists.category_id !== category_id)
+        {
+            
+            throw new AppError("Category already exists",409);
         }
         else
         {
-              return  database?.prepare('Update categories set category_name = ? where category_id = ?').run(category_id);
+            
+              return  database?.prepare('Update categories set category_name = ? where id = ?').run(category_name,category_id);
 
         }
 
@@ -273,7 +320,7 @@ class Categories
         
                 if(!this.isConnected())
                 {
-                      throw new Error("Database connection failed"); //throw an exception if connection has not been established
+                      throw new AppError("Database connection failed", 500); //throw an exception if connection has not been established
                   
                 }
                 return db;//return the database if connction has been established
