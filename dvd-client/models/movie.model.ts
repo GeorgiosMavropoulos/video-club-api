@@ -137,11 +137,11 @@ class MovieModel {
 
         }
 
-        //search if category id exists and genre matches with a category name
-        const categoryId = database.prepare('Select *FROM categories where id = ? and category_name = ?').get(category_id,genre);
+        //search if category id exists and genre matches with a category name. category needs to has a correct category id + category_name
+        const category_exists= database.prepare('Select *FROM categories where id = ? and category_name = ?').get(category_id,genre);
 
         //return an error message if category id does not exists
-        if(!categoryId)
+        if(!category_exists)
         {
             throw new AppError("The category does not exists",404);
         }
