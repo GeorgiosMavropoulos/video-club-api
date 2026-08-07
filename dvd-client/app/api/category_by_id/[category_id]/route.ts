@@ -94,14 +94,10 @@ export async function GET(req:Request, { params }: RouteContext)
           //create a categories object
           const category = new Categories();
 
-          //use the method from category which searches the database
+          //use the method from category which searches the database. Class returns the errors and the catch block returns them
           const get_category = await category.GetCategoryById(category_id);
 
-          //return an error message if category does not exists
-          if(!get_category)
-          {
-            return NextResponse.json({message:`The category with id ${category_id}, does not exist`},{status:404})
-          }
+         
 
           //if category exists return the successful response
           return NextResponse.json({message:'Success',Categories:get_category},{status:200});
@@ -165,15 +161,10 @@ export async function PUT(req:NextRequest, {params}:RouteContext)
         category_name.charAt(0).toUpperCase() + category_name.slice(1).toLowerCase();
 
 
-          //use the method from category which searches the database
+          //use the method from category which searches the database. Class returns the errors and the catch block catches them
           const update_category = category.UpdateCategory(category_id,formattedCategoryName);
 
-          //Return an error message if category does not exist
-          if(!update_category)
-          {
-            return NextResponse.json({message:`The category with id ${category_id}, does not exist`},{status:404})
-          }
-
+       
           //return the success code if all gos well
           return NextResponse.json({message:`Success the category has been updated`,update_category},{status:200});
 
