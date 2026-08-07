@@ -10,6 +10,19 @@ import MovieModel from '../../../models/movie.model';
 //import the error class
 import AppError from '@/errors/AppError';
 
+
+//create a type of movie body since I am going to need it to create the PUT and POST endpoints
+type MovieBody = {
+    category_id: number;
+    title: string;
+    director: string;
+    date: string;
+    plot: string;
+    genre: string;
+    image: string;
+};
+
+
 /*
 **
  * @api {get} /movies  Get All Movies
@@ -84,15 +97,10 @@ export async function GET(req:NextRequest)
     {
 
       
-        //create the statement
+        //create the statement. Backend handles all the errors and catch block returns them
         const movies = await movie_obj.GetAllMovies(); //retrieve all movies
 
-        //return an error message if no movie exists
-        if(movies.length === 0)
-        {
-            //return an error code
-            return NextResponse.json({message:`Currently there aren't any movies available`},{status:404});
-        }
+        
 
         //if all goes well and atleast one movie exists, return it
         return NextResponse.json({message:`Success`,Movie:movies},{status:200});
@@ -113,6 +121,57 @@ export async function GET(req:NextRequest)
         return NextResponse.json({message:`Internal Server Error`, },{status:500})
     }
 
+}
+
+//endpoint to create a movie
+export async function POST(req:NextRequest)
+{
+    try
+    {
+          //create the body 
+          const body:MovieBody  = await req.json();
+
+          //create the movie's array
+          const {category_id, title, director ,date,plot,genre,image} = body;
+
+
+          //return an error message if inputs are empty
+          if (!category_id || !title || !director || !date || !plot || !genre || !image) {
+    return NextResponse.json(
+        { message: "Please provide all movie fields" },
+        { status: 400 }
+    );
+}
+
+
+    //create a new object
+    const movie_create = new MovieModel();
+
+    //call the function to create the movie. functional handles all errors, and catch block returns them
+    const create_new_movie = await movie_create.CreateMovie(category_id, title, director ,date,plot,genre,image);
+
+    //if all goes well return a success message
+    return NextResponse.json({message:'Success, movie created',MovieModel:create_new_movie},{status:201});
+
+
+
+    }catch(e)
+    {
+        //return the backend errors if any
+        if(e instanceof AppError)
+        {
+            return NextResponse.json(
+            {
+                message: e.message
+            },
+            { status: e.statusCode }
+        );
+
+        }
+    }
+
+    return NextResponse.json({message:`Internal Server Error`, },{status:500}) //return a generic error
+  
 }
 
 

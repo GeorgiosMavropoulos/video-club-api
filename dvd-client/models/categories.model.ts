@@ -106,15 +106,9 @@ class Categories
         const database = this.GetDataBase();
         
 
-          const category =  database?.prepare('Select * From categories where category_name = ?').get(category_name) as Category | undefined;  //get the category from the parameters
+          const category =  database?.prepare('Select * From categories where category_name = ?').get(category_name) as Category | undefined; 
 
-          //return an error message if category does not exists
-           //return an error message if category does not exists
-        if(!category)
-         {
-            throw new AppError("Category does not exist",404);
-         }
-    
+          
 
          //return the category if all goes well
          return category;

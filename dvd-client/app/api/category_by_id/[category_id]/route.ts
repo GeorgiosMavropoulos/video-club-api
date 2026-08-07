@@ -164,11 +164,11 @@ export async function PUT(req:NextRequest, {params}:RouteContext)
 
 
           //use the method from category which searches the database. Class returns the errors and the catch block catches them
-          const update_category = category.UpdateCategory(category_id,formattedCategoryName);
+          const update_category = await category.UpdateCategory(category_id,formattedCategoryName);
 
        
           //return the success code if all gos well
-          return NextResponse.json({message:`Success the category has been updated`,update_category},{status:200});
+          return NextResponse.json({message:`Success the category has been updated`,Categories:update_category},{status:200});
 
     
     }catch(e)
