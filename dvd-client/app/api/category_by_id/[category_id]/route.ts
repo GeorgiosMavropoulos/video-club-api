@@ -3,6 +3,8 @@
 //import categories model
 import Categories from '@/models/categories.model';
 
+import AppError from '@/errors/AppError';
+
 //import next response + request
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -105,9 +107,9 @@ export async function GET(req:Request, { params }: RouteContext)
     }catch(e)
     {
         //handle errors coming from class methods
-       if(e instanceof Error)
+       if(e instanceof AppError)
        {
-        return NextResponse.json({message: e.message},{status:500});
+        return NextResponse.json({message: e.message},{status: e.statusCode});
        }
 
         return NextResponse.json({message: `Internal server error`},{status:500});
@@ -171,11 +173,12 @@ export async function PUT(req:NextRequest, {params}:RouteContext)
     
     }catch(e)
     {
-        //handle errors coming from class methods
-       if(e instanceof Error)
+       //handle errors coming from class methods
+       if(e instanceof AppError)
        {
-        return NextResponse.json({message: e.message},{status:500});
+        return NextResponse.json({message: e.message},{status: e.statusCode});
        }
+
 
         return NextResponse.json({message: `Internal server error`},{status:500});
     }

@@ -7,6 +7,9 @@ import { NextRequest, NextResponse } from 'next/server';
 //import movie model
 import MovieModel from '../../../models/movie.model';
 
+//import the error class
+import AppError from '@/errors/AppError';
+
 /*
 **
  * @api {get} /movies  Get All Movies
@@ -96,12 +99,12 @@ export async function GET(req:NextRequest)
 
     }catch(e: unknown)
     {
-          if (e instanceof Error) {
+          if (e instanceof AppError) {
         return NextResponse.json(
             {
                 message: e.message
             },
-            { status: 500 }
+            { status: e.statusCode }
         ); //catch specific errors from backend
     }
 

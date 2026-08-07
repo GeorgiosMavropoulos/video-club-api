@@ -2,6 +2,9 @@
 //import categories model
 import Categories from '@/models/categories.model';
 
+
+//import the error class
+import AppError from '@/errors/AppError';
 //import next response + request
 import { NextRequest, NextResponse } from 'next/server';
 /**
@@ -86,20 +89,17 @@ export async function GET(req:NextRequest)
     
         }catch(e: unknown)
         {
-              if (e instanceof Error) {
-        return NextResponse.json(
-            {
-                message: e.message
-            },
-            { status: 500 }
-           ); //catch specific errors from backend
-              
+           //handle errors coming from class methods
+                  if(e instanceof AppError)
+                  {
+                   return NextResponse.json({message: e.message},{status: e.statusCode});
+                  }
     
             return NextResponse.json({message:`Internal Server Error`},{status:500})
         }
     
 }
-}
+
 
   /**
  * @api {post} /movies/categories  Create a New Category
@@ -185,11 +185,11 @@ export async function POST(req:NextRequest)
 
     }catch(e)
     {
-       //handle errors coming from class methods
-       if(e instanceof Error)
-       {
-        return NextResponse.json({message: e.message},{status:500});
-       }
+      //handle errors coming from class methods
+                  if(e instanceof AppError)
+                  {
+                   return NextResponse.json({message: e.message},{status: e.statusCode});
+                  }
 
         return NextResponse.json({message: `Internal server error`},{status:500});
     }
