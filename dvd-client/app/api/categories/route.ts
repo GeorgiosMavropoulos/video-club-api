@@ -73,14 +73,10 @@ export async function GET(req:NextRequest)
             //create categories object
             const category = new Categories();
 
-            //execute the function to get all categories from Databse. This function handles all the erros and connection errors
+            //execute the function to get all categories from Databse. This function handles all the errors and connection errors
             const get_categories = await category.GetAllCategories();
 
-            //return an error message if categories does not exist
-            if(!get_categories || get_categories.length === 0)
-            {
-                return NextResponse.json({message:`Currently there aren't any categories available`},{status:404});
-            }
+          
 
             //if all goes well, return categories object
             return NextResponse.json({message:'Success',Categories:get_categories},{status:201})

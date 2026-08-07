@@ -95,8 +95,11 @@ export async function GET(req:Request, { params }: RouteContext)
            //capitalize the first letter only and add in lower case the other one unregarded what user inserts
     const formattedCategoryName =
       category_name.charAt(0).toUpperCase() + category_name.slice(1).toLowerCase();
+
+
+
           //use the method from category which searches the database
-          const get_category = category.GetCategoryByName(formattedCategoryName);
+          const get_category = await category.GetCategoryByName(formattedCategoryName);
 
           
 
@@ -217,10 +220,10 @@ export async function DELETE(req:NextRequest,{params}:RouteContext)
 
 
           //call the method to delete the object
-          category.DeleteCategory(formattedCategoryName);
+         await category.DeleteCategory(formattedCategoryName);
 
           //return success if all goes well. However, if something goes wrong, backend will return an error message. The error msg from backend is being caught in catch block
-          return NextResponse.json({message:`The category:${formattedCategoryName} has been deleted with success`},{status:200})
+          return NextResponse.json({message:`The category:${formattedCategoryName} has been deleted with success`,Categories:category},{status:200})
 
 
 

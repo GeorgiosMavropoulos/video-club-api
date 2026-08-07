@@ -1,6 +1,9 @@
 
 import db from '@/lib/db';
 
+//import app error class
+import AppError from '@/errors/AppError';
+
 //this file contains movie's model methods in order not to execute queries directly from the api
 
 class MovieModel {
@@ -99,10 +102,66 @@ class MovieModel {
         //create a DB object if connection is active, else the helper method below will return an error
         const database = this.GetDataBase();
         
-        return  database ? database.prepare('Select * From movies').all() : [];
+
+        //create an object to store the retrived movies
+        const movies = database ? database.prepare('Select * From movies').all() : [];
+
+        //return an error message if no movie exists
+        if(movies.length === 0)
+        {
+            throw new AppError("Currently there aren't any movies available", 404);
+
+        }
+
+         return movies;//return movies if all goes well
        
         
         
+    }
+
+
+    //method to create a new movie
+    public CreateMovie(category_id:number,title:string,director:string, date:string, plot:string, genre:string,image:string)
+    {
+
+            //create a DB object if connection is active, else the helper method below will return an error
+           const database = this.GetDataBase();
+
+     
+        //return an error message if movie's title is duplicated
+        const movie_title = database.prepare('Select *FROM movies where title = ?').get(title);
+
+        if(movie_title)
+        {
+            throw new AppError("There's another movie with the same title",409);
+
+        }
+
+        //search if category id exists and genre matches with a category name
+        const categoryId = database.prepare('Select *FROM categories where id = ? and category_name = ?').get(category_id,genre);
+
+        //return an error message if category id does not exists
+        if(!categoryId)
+        {
+            throw new AppError("The category does not exists",404);
+        }
+
+        
+     
+           //create an object to delegate the query
+    const create_movie = database.prepare(`Insert into movies (category_id, title, director, date, plot, genre, image) values (?,?,?,?,?,?,?)`).run(category_id,title,director,date,plot,genre,image);
+
+
+     
+
+      //return an error message if something goes wrong
+      if (create_movie.changes === 0) {
+      throw new AppError("Movie could not be created", 500);
+}
+
+  //if all goes well return the object
+    return create_movie;
+
     }
 
     //helper method to return an error message if system cannot establish db conneciton
@@ -124,10 +183,10 @@ class MovieModel {
 
         if(!this.isConnected())
         {
-              throw new Error("Database connection failed"); //throw an exception if connection has not been established
+              throw new AppError("Database connection failed",500); //throw an exception if connection has not been established
           
         }
-        return db;//return the database if connction has been established
+        return db!;//return the database if connction has been established
 
     }
 
